@@ -14,7 +14,7 @@ Run this once on each machine, inside Claude Code. Choose **User** scope to use 
 /plugin install jason-toolkit --marketplace jasonshave/agent-toolkit
 ```
 
-This adds the marketplace and installs all 10 skills and six worker agents. Try `/jason-toolkit:prune-tests`.
+This adds the marketplace and installs eight skills and six worker agents. Try `/jason-toolkit:prune-tests`.
 If the plugin doesn’t appear in your current session, run `/reload-plugins` or open a new session.
 
 On older Claude Code versions, add the marketplace and install the plugin in two steps:
@@ -88,8 +88,9 @@ git pull --ff-only
 node scripts/build.mjs
 node scripts/install.mjs install
 node scripts/install.mjs doctor
-node scripts/install.mjs uninstall
 ```
+
+To remove a direct installation, run `node scripts/install.mjs uninstall`.
 
 Use the same `--home`, `--scope`, `--project`, `--agents`, `--skills` and migration/bridge options
 when updating or uninstalling a selective installation. Uninstall restores backed-up originals;
@@ -99,6 +100,13 @@ credentials, or the source checkout. Backups are user data: review them before d
 
 To remove a skill entirely from discovery while keeping an older original inactive in the backup
 archive, use `uninstall --skills <name> --archive-originals`. The receipt records the archived path.
+
+If you installed directly before version 2.1, remove the retired orchestration skills after updating.
+Marketplace installs pick up the consolidation with a plugin update.
+
+```sh
+node scripts/install.mjs uninstall --skills parallel-plan,parallel-orchestrate --archive-originals
+```
 
 ## Marketplaces for other assistants
 
@@ -133,12 +141,14 @@ option when using several hosts on one machine. See [host support](docs/hosts.md
 | `cinematic-scroll` | Design and implement scroll-driven cinematic websites |
 | `committee` | Independent mixed-provider review rounds, checked evidence and recorded dissent |
 | `new-azure-site` | Bootstrap an Azure app from an accessible starter template |
-| `orchestrate` | Delegate isolated units, integrate and ship one verified PR |
-| `parallel-orchestrate` | Execute dependency-linked child issues with one PR per child |
-| `parallel-plan` | Create a dependency-aware parent/child issue plan |
+| `orchestrate` | Plan and delegate work in isolated worktrees, then ship one combined PR or one PR per worker |
 | `prune-tests` | Classify low-value tests, prove safe removals and ship measured cleanup |
 | `security-review` | Verify security boundaries and file actionable, evidenced findings |
 | `ship` | Implement and locally verify a change, own its PR through merge and cleanup |
+
+Type `/jason-toolkit:orchestrate --help` in Claude Code or `$orchestrate --help` in Codex.
+Use `--one-pr` or `--per-worker-pr` to choose upfront. Otherwise the skill asks how to ship
+before beginning implementation. Give it a task description or an issue such as `#42`.
 
 Each skill checks its own dependencies. `brand-kit` needs authorized fal.ai access and the image/font
 tools it names; it asks before spending. `new-azure-site` needs Azure, .NET, Node and template access.

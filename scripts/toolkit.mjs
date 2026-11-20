@@ -13,7 +13,7 @@ export const agentRoots = {
 export const projectRoots = { ...agentRoots, copilot: '.github/skills', grok: '.grok/skills', opencode: '.opencode/skills' };
 export const roleBundles = {
   'prune-tests': ['test-classifier', 'test-prover'], committee: ['committee-member', 'committee-member-web'],
-  'parallel-orchestrate': ['parallel-worker'], ship: ['ship-pr'], orchestrate: ['parallel-worker'],
+  ship: ['ship-pr'], orchestrate: ['parallel-worker'],
 };
 export function cliCommand(name) {
   if (process.platform === 'win32' && name === 'codex') {
@@ -75,5 +75,5 @@ export function parseFrontmatter(file) {
     } else if (/:\s/.test(value)) throw new Error(`Quote YAML values containing colon-space: ${file}`);
     fields[field[1]] = value;
   }
-  return { fields, body: text.slice(match[0].length) };
+  return { fields, frontmatter: match[0], body: text.slice(match[0].length) };
 }

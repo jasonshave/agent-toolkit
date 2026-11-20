@@ -36,7 +36,8 @@ for (const file of files(path.join(repo, 'scripts')).filter(f => f.endsWith('.mj
   if (check.status !== 0) problems.push(check.stderr);
 }
 const manifests = ['plugin.json', '.claude-plugin/plugin.json', '.codex-plugin/plugin.json'].map(p => JSON.parse(fs.readFileSync(path.join(plugin, p), 'utf8')));
-if (manifests.some(m => m.name !== 'jason-toolkit' || m.version !== '2.0.0')) problems.push('Plugin identities/versions disagree');
+const { version } = JSON.parse(fs.readFileSync(path.join(repo, 'package.json'), 'utf8'));
+if (manifests.some(m => m.name !== 'jason-toolkit' || m.version !== version)) problems.push('Plugin identities/versions disagree');
 for (const file of ['.claude-plugin/marketplace.json', '.agents/plugins/marketplace.json']) {
   const m = JSON.parse(fs.readFileSync(path.join(repo, file), 'utf8'));
   const entry = m.plugins.find(p => p.name === 'jason-toolkit');

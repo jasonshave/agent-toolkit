@@ -13,9 +13,8 @@ for (const name of skills()) {
     fs.mkdirSync(path.dirname(destination), { recursive: true }); fs.copyFileSync(source, destination);
   }
   const manifest = path.join(skill, 'SKILL.md');
-  const { fields, body } = parseFrontmatter(manifest);
-  const metadata = `---\nname: ${fields.name}\ndescription: ${JSON.stringify(fields.description)}\n---\n`;
+  const { frontmatter, body } = parseFrontmatter(manifest);
   const link = '\nRead [host execution guidance](references/host-runtime.md) before running this workflow.\n';
-  fs.writeFileSync(manifest, metadata + (body.includes('(references/host-runtime.md)') ? body : link + body));
+  if (!body.includes('(references/host-runtime.md)')) fs.writeFileSync(manifest, frontmatter + link + body);
 }
 console.log(`Built ${skills().length} self-contained skills and bundled worker roles.`);

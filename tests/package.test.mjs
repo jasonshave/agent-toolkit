@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { repo, plugin, skills, skillRoot } from '../scripts/toolkit.mjs';
+import { repo, plugin, skills, skillRoot, parseFrontmatter } from '../scripts/toolkit.mjs';
 import { install, parseArgs, uninstall } from '../scripts/install.mjs';
 
 test('every skill survives a standalone copy with its runtime and worker roles', t => {
@@ -35,6 +35,10 @@ test('both marketplace catalogs resolve the same self-contained plugin', () => {
     const manifest = JSON.parse(fs.readFileSync(path.join(repo, file), 'utf8'));
     const entry = manifest.plugins.find(p => p.name === 'jason-toolkit');
     assert.equal(path.resolve(repo, typeof entry.source === 'string' ? entry.source : entry.source.path), plugin);
+  }
+  const { fields } = parseFrontmatter(path.join(skillRoot, 'orchestrate/SKILL.md'));
+  for (const option of ['--one-pr', '--per-worker-pr', '--help']) {
+    assert.ok(fields['argument-hint']?.includes(option), `Native argument hint missing ${option}`);
   }
 });
 test('all JavaScript helper and installer code parses with the installed Node runtime', () => {

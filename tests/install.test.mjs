@@ -141,14 +141,22 @@ test('a late filesystem failure rolls back earlier copies and preserves original
   assert.equal(fs.readFileSync(path.join(destination, 'original'), 'utf8'), 'keep');
   assert.equal(fs.existsSync(path.join(options.home, '.agents/skills/prune-tests')), false);
 });
-test('selective uninstall retains a native worker shared by another installed skill', t => {
-  const options = fixture(t, ['--agents', 'claude', '--skills', 'orchestrate,parallel-orchestrate']);
-  install(options, quiet);
+test('removing a legacy orchestration skill retains the consolidated skill and its native worker', t => {
+  const options = fixture(t, ['--agents', 'claude', '--skills', 'orchestrate']);
+  const receipt = install(options, quiet);
   const worker = path.join(options.home, '.claude/agents/parallel-worker.md');
-  const removeOne = parseArgs(['uninstall', '--home', options.home, '--agents', 'claude', '--skills', 'orchestrate']);
+  const legacyName = 'parallel-orchestrate';
+  const installed = receipt.entries.find(entry => entry.kind === 'skill');
+  const legacy = path.join(path.dirname(installed.destination), legacyName);
+  fs.cpSync(installed.destination, legacy, { recursive: true });
+  receipt.entries.push({ ...installed, destination: legacy, fingerprint: fingerprint(legacy) });
+  receipt.entries.find(entry => entry.destination === worker).owners.push(legacyName);
+  fs.writeFileSync(path.join(options.home, '.local/share/jason-toolkit/installations.json'), JSON.stringify(receipt));
+
+  const removeOne = parseArgs(['uninstall', '--home', options.home, '--agents', 'claude', '--skills', legacyName]);
   uninstall(removeOne, quiet);
-  assert.equal(fs.existsSync(path.join(options.home, '.claude/skills/orchestrate')), false);
-  assert.ok(fs.existsSync(path.join(options.home, '.claude/skills/parallel-orchestrate/SKILL.md')));
+  assert.equal(fs.existsSync(legacy), false);
+  assert.ok(fs.existsSync(path.join(installed.destination, 'SKILL.md')));
   assert.ok(fs.existsSync(worker));
   uninstall(parseArgs(['uninstall', '--home', options.home, '--agents', 'claude']), quiet);
   assert.equal(fs.existsSync(worker), false);

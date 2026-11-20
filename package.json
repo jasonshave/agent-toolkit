@@ -1,6 +1,6 @@
 {
   "name": "jason-agent-toolkit",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "description": "Portable personal development skills for Claude Code, Codex, Copilot and Grok",
   "engines": { "node": ">=20" },
