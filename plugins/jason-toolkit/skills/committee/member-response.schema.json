@@ -1,0 +1,80 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["seat", "verdict", "summary", "scores", "blockers", "responses", "position_changes", "open_questions"],
+  "properties": {
+    "seat": { "type": "string", "description": "The seat letter you were given, e.g. \"B\"." },
+    "verdict": {
+      "type": "string",
+      "enum": ["pass", "conditional", "fail"],
+      "description": "pass = meets the bar as is. conditional = meets it once your blockers are fixed. fail = the approach itself falls short of the bar."
+    },
+    "summary": { "type": "string", "description": "Two or three plain-English sentences: your overall judgement and the single most important reason." },
+    "scores": {
+      "type": "array",
+      "description": "One entry per scorecard criterion in the brief, in the same order.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["criterion", "score", "why"],
+        "properties": {
+          "criterion": { "type": "string" },
+          "score": { "type": "integer", "description": "1 to 10. 7 means meets the bar; below 7 means it does not." },
+          "why": { "type": "string" }
+        }
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "description": "Problems YOU raise that must be fixed before this meets the bar. Not nitpicks. In later rounds, repeat each of your own earlier blockers with its current status.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "claim", "evidence", "checked", "fix", "status"],
+        "properties": {
+          "id": { "type": "string", "description": "Your seat letter plus a number, e.g. \"B2\". Keep the same id across rounds." },
+          "claim": { "type": "string", "description": "What is wrong and what it would cause, in one or two sentences." },
+          "evidence": { "type": "string", "description": "What proves it: a file and line, a quoted passage, a command you ran and its output, a source URL. Empty string if you have none." },
+          "checked": { "type": "boolean", "description": "true only if you personally looked at the evidence in this run (read the file, ran the command, opened the page). false if it is reasoning or memory." },
+          "fix": { "type": "string", "description": "The smallest change that would remove the blocker." },
+          "status": { "type": "string", "enum": ["new", "held", "withdrawn"], "description": "new in round 1. Later: held, or withdrawn (then position_changes must say what convinced you)." }
+        }
+      }
+    },
+    "responses": {
+      "type": "array",
+      "description": "Round 1: empty. Later rounds: one entry for every blocker raised by OTHER seats in the dossier.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["blocker_id", "steelman", "stance", "evidence"],
+        "properties": {
+          "blocker_id": { "type": "string" },
+          "steelman": { "type": "string", "description": "The strongest honest version of that blocker, in one sentence, before you judge it." },
+          "stance": { "type": "string", "enum": ["agree", "dispute", "unsure", "fixed", "not_fixed", "fixed_new_problem"], "description": "Debate rounds: agree, dispute or unsure. Resubmissions: fixed, not_fixed, or fixed_new_problem (the fix caused a new problem; explain it in evidence)." },
+          "evidence": { "type": "string", "description": "What you checked that supports your stance. A dispute with no evidence counts as unsure." }
+        }
+      }
+    },
+    "position_changes": {
+      "type": "array",
+      "description": "Every place where your verdict, a score, or one of your blockers changed since your last round. Empty in round 1.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["what_changed", "from", "to", "convinced_by"],
+        "properties": {
+          "what_changed": { "type": "string" },
+          "from": { "type": "string" },
+          "to": { "type": "string" },
+          "convinced_by": { "type": "string", "description": "Quote the specific evidence or argument that changed your mind. Agreement with the majority is not a reason." }
+        }
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "description": "Things only the owner can answer that would change your verdict. Keep it short.",
+      "items": { "type": "string" }
+    }
+  }
+}

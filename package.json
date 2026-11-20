@@ -1,0 +1,17 @@
+{
+  "name": "jason-agent-toolkit",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Portable personal development skills for Claude Code, Codex, Copilot and Grok",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "validate": "node scripts/validate.mjs",
+    "test": "node --test --test-concurrency=2 tests/*.test.mjs",
+    "check": "npm run build && npm run validate && npm test",
+    "install-skills": "node scripts/install.mjs install",
+    "doctor": "node scripts/install.mjs doctor"
+  },
+  "files": ["plugins/", "scripts/", "tests/", "authoring/", "docs/", "README.md", "restore.ps1", "sync.ps1", "doctor.ps1", ".claude-plugin/", ".agents/"],
+  "license": "UNLICENSED"
+}

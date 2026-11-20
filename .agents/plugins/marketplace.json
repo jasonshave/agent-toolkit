@@ -1,0 +1,12 @@
+{
+  "name": "jason-plugins",
+  "interface": { "displayName": "Jason's agent toolkit" },
+  "plugins": [
+    {
+      "name": "jason-toolkit",
+      "source": { "source": "local", "path": "./plugins/jason-toolkit" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Productivity"
+    }
+  ]
+}

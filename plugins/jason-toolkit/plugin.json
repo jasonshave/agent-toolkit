@@ -1,0 +1,8 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "jason-toolkit",
+  "version": "2.0.0",
+  "description": "Portable development, shipping, review, design and test-audit skills",
+  "author": { "name": "Jason Shave" },
+  "repository": "https://github.com/jasonshave/agent-toolkit"
+}

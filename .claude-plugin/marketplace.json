@@ -1,0 +1,15 @@
+{
+  "name": "jason-plugins",
+  "description": "Jason's portable agent toolkit — skills and worker roles maintained in this repository",
+  "owner": {
+    "name": "Jason Shave",
+    "email": "jasonshave@unifinity.com"
+  },
+  "plugins": [
+    {
+      "name": "jason-toolkit",
+      "source": "./plugins/jason-toolkit",
+      "description": "Portable workflows for Claude Code, Codex, Copilot and Grok: development, shipping, committee and security reviews, test pruning, branding and cinematic websites"
+    }
+  ]
+}

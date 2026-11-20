@@ -1,0 +1,7 @@
+.committee/
+.task-cache/
+artifacts/
+node_modules/
+__pycache__/
+*.pyc
+*.tgz

@@ -1,0 +1,10 @@
+{
+  "name": "jason-toolkit",
+  "version": "2.0.0",
+  "description": "Portable development, shipping, review, design and test-audit skills",
+  "author": {
+    "name": "Jason Shave",
+    "email": "jasonshave@unifinity.com"
+  },
+  "repository": "https://github.com/jasonshave/agent-toolkit"
+}
