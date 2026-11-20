@@ -6,7 +6,27 @@ GitHub Copilot and Grok Build**.
 The repository is the source of truth. Edit skills here, commit them, then update installations.
 Do not edit marketplace caches or copy home-directory files back over the repository.
 
-## Install on this or another computer
+## Install in Claude Code
+
+Run this once on each machine, inside Claude Code. Choose **User** scope to use the toolkit across projects.
+
+```text
+/plugin install jason-toolkit --marketplace jasonshave/agent-toolkit
+```
+
+This adds the marketplace and installs all 10 skills and six worker agents. Try `/jason-toolkit:prune-tests`.
+If the plugin doesn’t appear in your current session, run `/reload-plugins` or open a new session.
+
+On older Claude Code versions, add the marketplace and install the plugin in two steps:
+
+```text
+/plugin marketplace add jasonshave/agent-toolkit
+/plugin install jason-toolkit@jason-plugins
+```
+
+Use `/plugin` to manage the installation and check for updates.
+
+## Direct installation
 
 Requires Git and Node.js 20+. No npm dependencies, global npm installs, MCP servers or account
 configuration are installed by the setup script. Install and authenticate your chosen assistant
@@ -80,18 +100,10 @@ credentials, or the source checkout. Backups are user data: review them before d
 To remove a skill entirely from discovery while keeping an older original inactive in the backup
 archive, use `uninstall --skills <name> --archive-originals`. The receipt records the archived path.
 
-## Marketplace installation
+## Marketplaces for other assistants
 
 Use **either** direct installation **or** the plugin for a given host, to avoid duplicate entries.
 Plugin installation is a snapshot: refresh it explicitly after repository changes.
-
-Claude Code:
-
-```text
-/plugin marketplace add jasonshave/agent-toolkit
-/plugin install jason-toolkit@jason-plugins
-/plugin marketplace update jason-plugins
-```
 
 Codex CLI:
 
